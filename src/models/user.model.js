@@ -25,8 +25,6 @@ const userSchema = mongoose.Schema(
     },
     password: {
       type: String,
-      required: true,
-      trim: true,
       validate(value) {
         if (!value.match(/\d/) || !value.match(/[a-zA-Z]/)) {
           throw new Error(
@@ -62,14 +60,20 @@ userSchema.statics.isEmailTaken = async function (email) {
   return !!user;
 };
 
+/**
+ * Check if entered password matches the user's password
+ * @param {string} password
+ * @returns {Promise<boolean>}
+ */
+userSchema.methods.isPasswordMatch = async function (password) {
+};
 
 
-// TODO: CRIO_TASK_MODULE_UNDERSTANDING_BASICS 
+
 /*
  * Create a Mongoose model out of userSchema and export the model as "User"
  * Note: The model should be accessible in a different module when imported like below
  * const User = require("<user.model file path>").User;
- * 
  */
 /**
  * @typedef User
