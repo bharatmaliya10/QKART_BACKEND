@@ -61,13 +61,11 @@ const createUser = async (userBody) => {
   const salt = await bcrypt.genSalt(10);
   const hashedPassword = await bcrypt.hash(password, salt);
 
-  // const user =new User ({
     const user =await User.create ({
     name,
     email,
     password: hashedPassword,
   });
-  await User.create();
   return user;
 };
 
