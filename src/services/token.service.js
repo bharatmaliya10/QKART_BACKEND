@@ -1,9 +1,10 @@
+  // const { now } = require("core-js/core/date");
 const jwt = require("jsonwebtoken");
-const config = require("../config/config");
-const { tokenTypes } = require("../config/tokens");
+  const config = require("../config/config");
+  const { tokenTypes } = require("../config/tokens");
 
-/**
- * Generate jwt token
+  /**
+   * Generate jwt token
  * - Payload must contain fields
  * --- "sub": `userId` parameter
  * --- "type": `type` parameter
@@ -17,6 +18,14 @@ const { tokenTypes } = require("../config/tokens");
  * @returns {string}
  */
 const generateToken = (userId, expires, type, secret = config.jwt.secret) => {
+  const payload = {
+    sub: userId,
+    type: type,
+    exp: expires,
+    iat:Date.now()/1000
+  };
+
+  return jwt.sign(payload, secret);  
 };
 
 /**
@@ -35,6 +44,16 @@ const generateToken = (userId, expires, type, secret = config.jwt.secret) => {
  * }
  */
 const generateAuthTokens = async (user) => {
+  
+  const expires = Math.floor(Date.now()/1000 )+ config.jwt.accessExpirationMinutes * 60;
+  const accessToken = generateToken(user._id, expires, tokenTypes.ACCESS);
+  
+  return {
+    access: {
+      token: accessToken,
+      expires: new Date(expires *1000)
+    }
+  };
 };
 
 module.exports = {
