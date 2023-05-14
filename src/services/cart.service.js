@@ -195,6 +195,7 @@ const checkout = async (user) => {
   if(!hasSetNonDefaultAddress)
     throw new ApiError(httpStatus.BAD_REQUEST, "Address not set")
 
+
   const total = cart.cartItems.reduce((acc, item)=>{
     acc = acc + (item.quantity * item.product.cost)
     return acc;
@@ -202,6 +203,7 @@ const checkout = async (user) => {
 
   if(total >user.walletMoney)
      throw new ApiError(httpStatus.BAD_REQUEST, "User does not have sufficient balance")
+
   
   user.walletMoney -= total;
   await user.save();
